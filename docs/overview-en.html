@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@600&family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans:wght@400;500;600&display=block" rel="stylesheet">
+<style>
+/* hallmark: genre editorial; theme custom (warm paper, one vermilion signal, Hahmlet + IBM Plex Sans); signature: real-run result bars beside the lede, figure 1 system map; data: real (user runs), sample (figure 3, labelled) */
+/* critique: print one-pager; diagrams carry the structure, prose cut to what the figures cannot say */
+/* waive 75: A4 single printed sheet, body at 8.4pt */
+:root {
+  --color-paper: #F7F4EE;
+  --color-paper-2: #EFEBE3;
+  --color-paper-3: #E3DDD1;
+  --color-ink: #1F1D1A;
+  --color-ink-2: #4A4640;
+  --color-muted: #78726A;
+  --color-rule: #D6D0C4;
+  --color-rule-2: #B5AEA2;
+  --color-accent: #C4452B;
+  --font-display: "Hahmlet", serif;
+  --font-body: "IBM Plex Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 210mm; height: 297mm; overflow-x: clip; }
+body {
+  background: var(--color-paper); color: var(--color-ink);
+  font: 400 8.4pt/1.55 var(--font-body);
+  padding: 10.5mm 14mm 8mm;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  font-variant-numeric: tabular-nums;
+}
+.mono { font-family: var(--font-mono); font-size: 0.92em; }
+
+h1 { font: 600 18.5pt/1.2 var(--font-display); letter-spacing: -0.3pt; overflow-wrap: break-word; min-width: 0; }
+.byline { display: flex; justify-content: space-between; gap: 6mm; margin-top: 1.6mm; font-size: 7.9pt; color: var(--color-ink-2); }
+.byline .name { color: var(--color-ink); font-weight: 500; margin-right: 2.5mm; }
+.byline .ver { margin-right: 3mm; }
+.rule2 { border: 0; border-top: 1.2pt solid var(--color-ink); margin: 2.4mm 0 0; }
+.rule2 + .rule2 { border-top: 0.4pt solid var(--color-ink); margin-top: 0.7mm; }
+
+.intro { display: grid; grid-template-columns: minmax(0, 1fr) 72mm; gap: 8mm; margin-top: 3.6mm; align-items: start; }
+.lede { font-size: 9pt; line-height: 1.62; }
+.result h2 { font: 600 8.6pt/1.3 var(--font-body); margin-bottom: 1.6mm; }
+
+figure { margin: 0; }
+figcaption { font-size: 7.5pt; color: var(--color-ink-2); margin-top: 1.4mm; line-height: 1.5; }
+figcaption b { font-family: var(--font-display); font-weight: 600; color: var(--color-ink); margin-right: 1.2mm; }
+svg { display: block; width: 100%; height: auto; overflow: visible; }
+svg text { font-family: var(--font-body); fill: var(--color-ink); }
+svg .t { font-size: 11px; font-weight: 600; }
+svg .s { font-size: 9.2px; fill: var(--color-ink-2); }
+svg .m { font-family: var(--font-mono); font-size: 8.4px; fill: var(--color-ink-2); }
+svg .q { font-size: 9.6px; font-weight: 500; }
+svg .lbl { font-size: 8.4px; fill: var(--color-muted); }
+svg .box { fill: var(--color-paper-2); stroke: var(--color-rule-2); stroke-width: 0.8; }
+svg .hub { fill: var(--color-paper-2); stroke: var(--color-ink); stroke-width: 1.2; }
+svg .ask { fill: var(--color-paper-3); stroke: var(--color-rule-2); stroke-width: 0.8; }
+svg .ln { fill: none; stroke: var(--color-ink-2); stroke-width: 0.9; }
+svg .hot { fill: none; stroke: var(--color-accent); stroke-width: 1.6; }
+svg .ring { fill: none; stroke: var(--color-rule-2); stroke-width: 0.9; }
+svg .grid { stroke: var(--color-rule); stroke-width: 0.6; }
+svg .track { fill: var(--color-paper-3); }
+svg .fill-old { fill: var(--color-ink-2); }
+svg .fill-new { fill: var(--color-accent); }
+
+.fig1 { margin-top: 3.8mm; padding-top: 3.2mm; border-top: 0.4pt solid var(--color-rule-2); }
+.row2 { display: grid; grid-template-columns: minmax(0, 104mm) minmax(0, 1fr); gap: 8mm; margin-top: 3.4mm; padding-top: 3.2mm; border-top: 0.4pt solid var(--color-rule-2); }
+.row3 { display: grid; grid-template-columns: minmax(0, 1fr) 60mm; gap: 8mm; margin-top: 3.4mm; padding-top: 3.2mm; border-top: 0.4pt solid var(--color-rule-2); }
+h2 { font: 600 10.5pt/1.3 var(--font-display); margin-bottom: 1.8mm; }
+
+ol.dec { list-style: none; counter-reset: d; }
+ol.dec li { counter-increment: d; display: grid; grid-template-columns: 4.6mm minmax(0, 1fr); padding: 1.1mm 0 1.2mm; border-bottom: 0.4pt solid var(--color-rule); }
+ol.dec li:first-child { padding-top: 0; }
+ol.dec li::before { content: counter(d); font: 600 9.4pt/1.35 var(--font-display); color: var(--color-accent); }
+ol.dec h3 { display: inline; font-size: 8.4pt; font-weight: 600; margin-right: 1.6mm; }
+ol.dec p { display: inline; color: var(--color-ink-2); }
+
+table.check { width: 100%; border-collapse: collapse; font-size: 7.6pt; }
+table.check th { text-align: left; vertical-align: top; font-weight: 500; width: 17mm; padding: 1mm 2mm 1mm 0; border-bottom: 0.4pt solid var(--color-rule); }
+table.check td { color: var(--color-ink-2); padding: 1mm 0; border-bottom: 0.4pt solid var(--color-rule); line-height: 1.45; }
+table.check tr:first-child th, table.check tr:first-child td { border-top: 0.4pt solid var(--color-rule-2); }
+.right h2.second { margin-top: 3.4mm; }
+
+footer { margin-top: 3.6mm; padding-top: 2.2mm; border-top: 1.2pt solid var(--color-ink); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8mm; font-size: 7.5pt; color: var(--color-ink-2); line-height: 1.55; }
+footer b { color: var(--color-ink); font-weight: 600; margin-right: 1.2mm; }
+table.check th { width: 20mm; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Copying Naver Map saved lists into Google Maps</h1>
+  <div class="byline">
+    <span><span class="name">Jinho Paek</span>November 2026</span>
+    <span><span class="ver">v0.6.1 prototype</span><span class="mono">github.com/jinhopaek/naver-to-gmaps</span></span>
+  </div>
+</header>
+<hr class="rule2"><hr class="rule2">
+
+<section class="intro">
+  <p class="lede">Google Maps has no file import or public API for saved lists, so moving places from Naver Map meant searching and saving each one again by hand. This Chrome extension takes a Naver share link and repeats those steps in the browser. It uses no outside server and never sees a password. It clicks through a browser where you are already signed in.</p>
+  <figure class="result">
+    <h2>Runs on my own lists</h2>
+    <svg viewBox="0 0 260 58" role="img" aria-label="First run 143 of 163 saved, after fixes 169 of 174 saved">
+      <text class="q" x="0" y="9">First run</text>
+      <text class="s" x="60" y="9">143 of 163 saved, 20 failed</text>
+      <text class="t" x="260" y="9" text-anchor="end">87.7%</text>
+      <rect class="track" x="0" y="14" width="243.6" height="9"/>
+      <rect class="fill-old" x="0" y="14" width="213.7" height="9"/>
+
+      <text class="q" x="0" y="41">After fixes</text>
+      <text class="s" x="60" y="41">169 of 174 saved, 5 failed</text>
+      <text class="t" x="260" y="41" text-anchor="end">97.1%</text>
+      <rect class="track" x="0" y="46" width="260" height="9"/>
+      <rect class="fill-new" x="0" y="46" width="252.5" height="9"/>
+    </svg>
+    <figcaption>Remaining failures: places Google Maps could not find, and list menus that did not open.</figcaption>
+  </figure>
+</section>
+
+<figure class="fig1">
+  <svg viewBox="0 0 688 174" role="img" aria-label="Component diagram">
+    <defs>
+      <marker id="a" viewBox="0 0 8 8" refX="7.2" refY="4" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.6 L7.6,4 L0,7.4 Z" style="fill: var(--color-ink-2)"/></marker>
+      <marker id="h" viewBox="0 0 8 8" refX="7.2" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0.6 L7.6,4 L0,7.4 Z" style="fill: var(--color-accent)"/></marker>
+    </defs>
+    <rect class="box" x="0" y="0" width="136" height="40" rx="2"/>
+    <text class="t" x="10" y="17">Toolbar icon</text>
+    <text class="s" x="10" y="32">remaining count, !, tick</text>
+
+    <rect class="box" x="0" y="54" width="136" height="72" rx="2"/>
+    <text class="t" x="10" y="72">Popup</text>
+    <text class="m" x="10" y="86">popup.html, popup.js</text>
+    <text class="s" x="10" y="103">link and list name in</text>
+    <text class="s" x="10" y="117">progress and failures out</text>
+
+    <rect class="hub" x="232" y="6" width="200" height="104" rx="2"/>
+    <text class="t" x="244" y="25">Service worker</text>
+    <text class="lbl" x="422" y="25" text-anchor="end">1-min health check</text>
+    <text class="m" x="244" y="39">background.js, geo.js</text>
+    <text class="s" x="244" y="58">reads the Naver list</text>
+    <text class="s" x="244" y="72">searches and judges each place</text>
+    <text class="s" x="244" y="86">records results</text>
+    <text class="s" x="244" y="100">draws the icon state</text>
+
+    <rect class="box" x="232" y="132" width="200" height="40" rx="2"/>
+    <text class="m" x="244" y="149" style="fill: var(--color-ink); font-size: 9px">chrome.storage.local</text>
+    <text class="s" x="244" y="164">places, index, order, log</text>
+
+    <rect class="box" x="528" y="0" width="160" height="56" rx="2"/>
+    <text class="t" x="538" y="18">Naver saved-list API</text>
+    <text class="m" x="538" y="32">pages.map.naver.com</text>
+    <text class="s" x="538" y="47">name, address, lat and lng</text>
+
+    <rect class="box" x="528" y="82" width="160" height="90" rx="2"/>
+    <text class="t" x="538" y="99">Google Maps work tab</text>
+    <text class="m" x="538" y="113">google.com/maps?hl=en</text>
+    <text class="m" x="538" y="131">inspectPage</text>
+    <text class="s" x="538" y="143">place, result list or nothing</text>
+    <text class="m" x="538" y="157">saveInPage</text>
+    <text class="s" x="538" y="168">Save, pick the list, check tick</text>
+
+    <line class="ln" x1="232" y1="22" x2="139" y2="22" marker-end="url(#a)"/>
+    <text class="m" x="185" y="16" text-anchor="middle">setIcon</text>
+    <line class="ln" x1="136" y1="88" x2="229" y2="88" marker-end="url(#a)"/>
+    <text class="m" x="183" y="71" text-anchor="middle" style="font-size: 7.6px">load, start, resume</text>
+    <text class="m" x="183" y="81" text-anchor="middle" style="font-size: 7.6px">retryFailed, stop</text>
+    <path class="ln" d="M232,158 H70 V129" marker-end="url(#a)"/>
+    <text class="m" x="150" y="152" text-anchor="middle">storage.onChanged</text>
+    <line class="ln" x1="332" y1="110" x2="332" y2="129" marker-end="url(#a)"/>
+    <text class="lbl" x="338" y="124">write</text>
+
+    <line class="hot" x1="528" y1="28" x2="435" y2="28" marker-end="url(#h)"/>
+    <text class="s" x="480" y="21" text-anchor="middle">place list</text>
+    <text class="lbl" x="480" y="41" text-anchor="middle">Origin header</text>
+    <text class="lbl" x="480" y="51" text-anchor="middle">rewritten</text>
+    <line class="hot" x1="432" y1="92" x2="525" y2="92" marker-end="url(#h)"/>
+    <text class="m" x="479" y="86" text-anchor="middle">executeScript</text>
+    <line class="ln" x1="528" y1="102" x2="435" y2="102" marker-end="url(#a)"/>
+    <text class="lbl" x="480" y="115" text-anchor="middle">page type, result</text>
+  </svg>
+  <figcaption><b>Figure 1</b>Components and what passes between them. Red lines carry place data.</figcaption>
+</figure>
+
+<section class="row2">
+  <figure>
+    <svg viewBox="0 0 400 226" role="img" aria-label="Handling one place">
+      <defs>
+        <marker id="b" viewBox="0 0 8 8" refX="7.2" refY="4" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.6 L7.6,4 L0,7.4 Z" style="fill: var(--color-ink-2)"/></marker>
+        <marker id="c" viewBox="0 0 8 8" refX="7.2" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0.6 L7.6,4 L0,7.4 Z" style="fill: var(--color-accent)"/></marker>
+      </defs>
+      <rect class="box" x="100" y="0" width="200" height="26" rx="2"/>
+      <text class="q" x="200" y="17" text-anchor="middle">Search 1, name and address</text>
+      <line class="hot" x1="200" y1="26" x2="200" y2="37" marker-end="url(#c)"/>
+
+      <rect class="ask" x="130" y="40" width="140" height="24" rx="2"/>
+      <text class="q" x="200" y="56" text-anchor="middle">What came back?</text>
+
+      <path class="ln" d="M200,64 V74 H62 V83" marker-end="url(#b)"/>
+      <line class="hot" x1="200" y1="64" x2="200" y2="83" marker-end="url(#c)"/>
+      <path class="ln" d="M200,74 H338 V83" marker-end="url(#b)"/>
+      <text class="lbl" x="62" y="70" text-anchor="middle">place page</text>
+      <text class="lbl" x="205" y="82">result list</text>
+      <text class="lbl" x="338" y="70" text-anchor="middle">no results</text>
+
+      <rect class="box" x="0" y="86" width="124" height="40" rx="2"/>
+      <text class="s" x="62" y="102" text-anchor="middle">Within 1 km of</text>
+      <text class="s" x="62" y="116" text-anchor="middle">the Naver point?</text>
+
+      <rect class="box" x="138" y="86" width="124" height="40" rx="2" style="stroke: var(--color-accent)"/>
+      <text class="s" x="200" y="102" text-anchor="middle">Keep results within 250 m,</text>
+      <text class="s" x="200" y="116" text-anchor="middle">sort by score (fig. 3)</text>
+
+      <rect class="box" x="276" y="86" width="124" height="40" rx="2"/>
+      <text class="q" x="338" y="102" text-anchor="middle">Search 2</text>
+      <text class="s" x="338" y="116" text-anchor="middle">name, near the point</text>
+
+      <path class="ln" d="M386,86 V52 H273" marker-end="url(#b)"/>
+      <text class="lbl" x="330" y="47" text-anchor="middle">check again</text>
+
+      <path class="ln" d="M62,126 V138 H196"/>
+      <line class="hot" x1="200" y1="126" x2="200" y2="145" marker-end="url(#c)"/>
+
+      <rect class="ask" x="112" y="148" width="176" height="24" rx="2"/>
+      <text class="q" x="200" y="164" text-anchor="middle">Permanently closed?</text>
+
+      <path class="ln" d="M288,160 H338 V129" marker-end="url(#b)"/>
+      <text class="lbl" x="313" y="155" text-anchor="middle">yes, keep</text>
+
+      <line class="hot" x1="200" y1="172" x2="200" y2="187" marker-end="url(#c)"/>
+      <text class="lbl" x="206" y="183">no</text>
+
+      <rect class="box" x="112" y="190" width="176" height="26" rx="2" style="stroke: var(--color-accent)"/>
+      <text class="q" x="200" y="207" text-anchor="middle">Click Save, confirm the tick</text>
+
+      <path class="ln" d="M396,126 V180"/>
+      <text class="s" x="396" y="192" text-anchor="end">If search 2 fails too,</text>
+      <text class="s" x="396" y="205" text-anchor="end">log it. A closed pick is</text>
+      <text class="s" x="396" y="218" text-anchor="end">saved with a warning.</text>
+    </svg>
+    <figcaption><b>Figure 2</b>Handling one place. Red marks the usual path. Google Maps runs in English so button labels never change.</figcaption>
+  </figure>
+
+  <figure>
+    <svg viewBox="0 0 264 180" role="img" aria-label="Picking a candidate, example">
+      <line class="grid" x1="0" y1="90" x2="264" y2="90"/>
+      <line class="grid" x1="120" y1="0" x2="120" y2="166"/>
+      <circle class="ring" cx="120" cy="90" r="72"/>
+      <text class="lbl" x="120" y="176" text-anchor="middle">250 m radius</text>
+
+      <rect x="117" y="87" width="6" height="6" style="fill: var(--color-ink)"/>
+      <line class="ln" x1="116" y1="94" x2="98" y2="106"/>
+      <text class="s" x="96" y="111" text-anchor="end">Naver point</text>
+
+      <circle cx="125" cy="85" r="3.4" style="fill: var(--color-paper); stroke: var(--color-ink-2); stroke-width: 1"/>
+      <line class="ln" x1="128" y1="82" x2="140" y2="72"/>
+      <text class="s" x="142" y="62">A 20 m, score 1020</text>
+      <text class="lbl" x="142" y="73">permanently closed</text>
+
+      <circle cx="100" cy="81" r="4.4" style="fill: var(--color-accent)"/>
+      <line class="ln" x1="97" y1="77" x2="88" y2="66"/>
+      <text class="t" x="86" y="63" text-anchor="end">B 77 m, 77</text>
+
+      <circle cx="146" cy="121" r="3.4" style="fill: var(--color-paper); stroke: var(--color-ink-2); stroke-width: 1"/>
+      <text class="s" x="153" y="125">C 140 m, score 290</text>
+      <text class="lbl" x="153" y="136">temporarily closed</text>
+
+      <circle cx="210" cy="14" r="3.4" style="fill: var(--color-paper); stroke: var(--color-rule-2); stroke-width: 1"/>
+      <text class="lbl" x="202" y="18" text-anchor="end">D 410 m, outside</text>
+    </svg>
+    <figcaption><b>Figure 3</b>Picking a candidate (made-up layout). Score is the distance in metres, plus 1000 if permanently closed or 150 if temporarily closed, minus 100 if the name matches. B has the lowest score.</figcaption>
+  </figure>
+</section>
+
+<section class="row3">
+  <div>
+    <h2>Decisions along the way</h2>
+    <ol class="dec">
+      <li><div><h3>Where to save</h3><p>My Maps KML import makes a separate map that is awkward in the app. Automation puts places in the real saved list but breaks if the page changes.</p></div></li>
+      <li><div><h3>One link in</h3><p>There is no CSV step. Naver answers extension requests with a 403, so the extension rewrites the Origin header on its own requests only.</p></div></li>
+      <li><div><h3>Speed and blocking</h3><p>Every run saves the whole list. Fixed waits became page-change checks, and places are spaced 1 to 2.5 s apart at random.</p></div></li>
+      <li><div><h3>Shops with the same name</h3><p>Early versions gave up on multiple results. Now each result's plus code gives coordinates, and distance and business status decide.</p></div></li>
+      <li><div><h3>Showing that it stopped</h3><p>Chrome's badge was unreadable on a 16 px icon. During a job the whole icon turns into a circle with the remaining count, a ! or a tick.</p></div></li>
+      <li><div><h3>Failures</h3><p>Unfound places are logged and skipped. Only sign-in or robot-check problems halt the run, and Resume or Retry failed continues it.</p></div></li>
+    </ol>
+  </div>
+
+  <div class="right">
+    <figure>
+      <svg viewBox="0 0 250 112" role="img" aria-label="Job states">
+        <defs>
+          <marker id="d" viewBox="0 0 8 8" refX="7.2" refY="4" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.6 L7.6,4 L0,7.4 Z" style="fill: var(--color-ink-2)"/></marker>
+        </defs>
+        <text class="lbl" x="0" y="59">start</text>
+        <line class="ln" x1="19" y1="56" x2="29" y2="56" marker-end="url(#d)"/>
+        <rect class="hub" x="31" y="42" width="64" height="28" rx="2"/>
+        <text class="q" x="63" y="60" text-anchor="middle">Running</text>
+        <rect class="box" x="156" y="0" width="94" height="32" rx="2"/>
+        <text class="q" x="203" y="14" text-anchor="middle">Done</text>
+        <text class="lbl" x="203" y="27" text-anchor="middle">can retry failed</text>
+        <rect class="box" x="156" y="40" width="94" height="32" rx="2" style="stroke: var(--color-accent)"/>
+        <text class="q" x="203" y="54" text-anchor="middle">Halted</text>
+        <text class="lbl" x="203" y="67" text-anchor="middle">can resume</text>
+        <rect class="box" x="156" y="80" width="94" height="32" rx="2"/>
+        <text class="q" x="203" y="94" text-anchor="middle">Stopped</text>
+        <text class="lbl" x="203" y="107" text-anchor="middle">can resume</text>
+        <line class="ln" x1="95" y1="50" x2="153" y2="17" marker-end="url(#d)"/>
+        <line class="ln" x1="95" y1="56" x2="153" y2="56" marker-end="url(#d)"/>
+        <line class="ln" x1="95" y1="62" x2="153" y2="95" marker-end="url(#d)"/>
+      </svg>
+      <figcaption><b>Figure 4</b>Job states. Sign-out, a robot check or a missing list ends in Halted.</figcaption>
+    </figure>
+
+    <h2 class="second">What has been checked</h2>
+    <table class="check">
+      <tr><th>Google Maps</th><td>Matched at 2 m and 25 m. Right Starbucks (39 m) out of 10</td></tr>
+      <tr><th>Unit tests</th><td>Plus codes, distance, scoring, 8 passing (<span class="mono" style="white-space: nowrap">node --test</span>)</td></tr>
+      <tr><th>Not yet</th><td>Closed labels on live pages</td></tr>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <p><b>Limits</b>Breaks if Naver's internal API or the Google Maps page structure changes.</p>
+  <p><b>Built with</b>Chrome extension MV3, JavaScript, Python (KML converter)</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@600&family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans+KR:wght@400;500;600&display=block" rel="stylesheet">
+<style>
+/* hallmark: genre editorial; theme custom (warm paper, one vermilion signal, Hahmlet + IBM Plex Sans KR); signature: real-run result bars beside the lede, figure 1 system map; data: real (user runs), sample (figure 3, labelled) */
+/* critique: print one-pager; diagrams carry the structure, prose cut to what the figures cannot say */
+/* waive 75: A4 single printed sheet, body at 8.4pt */
+:root {
+  --color-paper: #F7F4EE;
+  --color-paper-2: #EFEBE3;
+  --color-paper-3: #E3DDD1;
+  --color-ink: #1F1D1A;
+  --color-ink-2: #4A4640;
+  --color-muted: #78726A;
+  --color-rule: #D6D0C4;
+  --color-rule-2: #B5AEA2;
+  --color-accent: #C4452B;
+  --font-display: "Hahmlet", serif;
+  --font-body: "IBM Plex Sans KR", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 210mm; height: 297mm; overflow-x: clip; }
+body {
+  background: var(--color-paper); color: var(--color-ink);
+  font: 400 8.4pt/1.55 var(--font-body);
+  padding: 10.5mm 14mm 8mm;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  font-variant-numeric: tabular-nums;
+}
+.mono { font-family: var(--font-mono); font-size: 0.92em; }
+
+h1 { font: 600 18.5pt/1.2 var(--font-display); letter-spacing: -0.3pt; overflow-wrap: break-word; min-width: 0; }
+.byline { display: flex; justify-content: space-between; gap: 6mm; margin-top: 1.6mm; font-size: 7.9pt; color: var(--color-ink-2); }
+.byline .name { color: var(--color-ink); font-weight: 500; margin-right: 2.5mm; }
+.byline .ver { margin-right: 3mm; }
+.rule2 { border: 0; border-top: 1.2pt solid var(--color-ink); margin: 2.4mm 0 0; }
+.rule2 + .rule2 { border-top: 0.4pt solid var(--color-ink); margin-top: 0.7mm; }
+
+.intro { display: grid; grid-template-columns: minmax(0, 1fr) 72mm; gap: 8mm; margin-top: 3.6mm; align-items: start; }
+.lede { font-size: 9pt; line-height: 1.62; }
+.result h2 { font: 600 8.6pt/1.3 var(--font-body); margin-bottom: 1.6mm; }
+
+figure { margin: 0; }
+figcaption { font-size: 7.5pt; color: var(--color-ink-2); margin-top: 1.4mm; line-height: 1.5; }
+figcaption b { font-family: var(--font-display); font-weight: 600; color: var(--color-ink); margin-right: 1.2mm; }
+svg { display: block; width: 100%; height: auto; overflow: visible; }
+svg text { font-family: var(--font-body); fill: var(--color-ink); }
+svg .t { font-size: 11px; font-weight: 600; }
+svg .s { font-size: 9.2px; fill: var(--color-ink-2); }
+svg .m { font-family: var(--font-mono); font-size: 8.4px; fill: var(--color-ink-2); }
+svg .q { font-size: 9.6px; font-weight: 500; }
+svg .lbl { font-size: 8.4px; fill: var(--color-muted); }
+svg .box { fill: var(--color-paper-2); stroke: var(--color-rule-2); stroke-width: 0.8; }
+svg .hub { fill: var(--color-paper-2); stroke: var(--color-ink); stroke-width: 1.2; }
+svg .ask { fill: var(--color-paper-3); stroke: var(--color-rule-2); stroke-width: 0.8; }
+svg .ln { fill: none; stroke: var(--color-ink-2); stroke-width: 0.9; }
+svg .hot { fill: none; stroke: var(--color-accent); stroke-width: 1.6; }
+svg .ring { fill: none; stroke: var(--color-rule-2); stroke-width: 0.9; }
+svg .grid { stroke: var(--color-rule); stroke-width: 0.6; }
+svg .track { fill: var(--color-paper-3); }
+svg .fill-old { fill: var(--color-ink-2); }
+svg .fill-new { fill: var(--color-accent); }
+
+.fig1 { margin-top: 3.8mm; padding-top: 3.2mm; border-top: 0.4pt solid var(--color-rule-2); }
+.row2 { display: grid; grid-template-columns: minmax(0, 104mm) minmax(0, 1fr); gap: 8mm; margin-top: 3.4mm; padding-top: 3.2mm; border-top: 0.4pt solid var(--color-rule-2); }
+.row3 { display: grid; grid-template-columns: minmax(0, 1fr) 60mm; gap: 8mm; margin-top: 3.4mm; padding-top: 3.2mm; border-top: 0.4pt solid var(--color-rule-2); }
+h2 { font: 600 10.5pt/1.3 var(--font-display); margin-bottom: 1.8mm; }
+
+ol.dec { list-style: none; counter-reset: d; }
+ol.dec li { counter-increment: d; display: grid; grid-template-columns: 4.6mm minmax(0, 1fr); padding: 1.1mm 0 1.2mm; border-bottom: 0.4pt solid var(--color-rule); }
+ol.dec li:first-child { padding-top: 0; }
+ol.dec li::before { content: counter(d); font: 600 9.4pt/1.35 var(--font-display); color: var(--color-accent); }
+ol.dec h3 { display: inline; font-size: 8.4pt; font-weight: 600; margin-right: 1.6mm; }
+ol.dec p { display: inline; color: var(--color-ink-2); }
+
+table.check { width: 100%; border-collapse: collapse; font-size: 7.6pt; }
+table.check th { text-align: left; vertical-align: top; font-weight: 500; width: 17mm; padding: 1mm 2mm 1mm 0; border-bottom: 0.4pt solid var(--color-rule); }
+table.check td { color: var(--color-ink-2); padding: 1mm 0; border-bottom: 0.4pt solid var(--color-rule); line-height: 1.45; }
+table.check tr:first-child th, table.check tr:first-child td { border-top: 0.4pt solid var(--color-rule-2); }
+.right h2.second { margin-top: 3.4mm; }
+
+footer { margin-top: 3.6mm; padding-top: 2.2mm; border-top: 1.2pt solid var(--color-ink); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8mm; font-size: 7.5pt; color: var(--color-ink-2); line-height: 1.55; }
+footer b { color: var(--color-ink); font-weight: 600; margin-right: 1.2mm; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>네이버 지도 목록을 구글지도로 옮기는 크롬 확장</h1>
+  <div class="byline">
+    <span><span class="name">백진호</span>2026년 11월</span>
+    <span><span class="ver">v0.6.1 시제품</span><span class="mono">github.com/jinhopaek/naver-to-gmaps</span></span>
+  </div>
+</header>
+<hr class="rule2"><hr class="rule2">
+
+<section class="intro">
+  <p class="lede">구글지도 저장 목록에는 파일 가져오기 기능도 공개 API도 없다. 네이버 지도에 모아 둔 장소를 옮기려면 한 곳씩 다시 검색해서 저장하는 수밖에 없었다. 이 확장 프로그램은 네이버 공유 링크를 받아 그 반복을 브라우저 안에서 처리한다. 외부 서버를 거치지 않고 비밀번호도 받지 않는다. 사용자가 로그인해 둔 브라우저에서 사람이 하던 클릭을 순서대로 실행할 뿐이다.</p>
+  <figure class="result">
+    <h2>내 목록으로 돌려 본 결과</h2>
+    <svg viewBox="0 0 260 58" role="img" aria-label="첫 시도 163곳 중 143곳, 수정 후 174곳 중 169곳 저장">
+      <text class="q" x="0" y="9">첫 시도</text>
+      <text class="s" x="44" y="9">163곳 중 143곳 저장, 실패 20곳</text>
+      <text class="t" x="260" y="9" text-anchor="end">87.7%</text>
+      <rect class="track" x="0" y="14" width="243.6" height="9"/>
+      <rect class="fill-old" x="0" y="14" width="213.7" height="9"/>
+
+      <text class="q" x="0" y="41">수정 후</text>
+      <text class="s" x="44" y="41">174곳 중 169곳 저장, 실패 5곳</text>
+      <text class="t" x="260" y="41" text-anchor="end">97.1%</text>
+      <rect class="track" x="0" y="46" width="260" height="9"/>
+      <rect class="fill-new" x="0" y="46" width="252.5" height="9"/>
+    </svg>
+    <figcaption>막대 길이는 장소 수에 비례한다. 남은 실패는 구글지도에서 찾지 못한 곳, 목록 메뉴가 열리지 않은 경우 등이다.</figcaption>
+  </figure>
+</section>
+
+<!-- 그림 1 -->
+<figure class="fig1">
+  <svg viewBox="0 0 688 174" role="img" aria-label="구성 요소 다이어그램">
+    <defs>
+      <marker id="a" viewBox="0 0 8 8" refX="7.2" refY="4" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.6 L7.6,4 L0,7.4 Z" style="fill: var(--color-ink-2)"/></marker>
+      <marker id="h" viewBox="0 0 8 8" refX="7.2" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0.6 L7.6,4 L0,7.4 Z" style="fill: var(--color-accent)"/></marker>
+    </defs>
+    <rect class="box" x="0" y="0" width="136" height="40" rx="2"/>
+    <text class="t" x="10" y="17">툴바 아이콘</text>
+    <text class="s" x="10" y="32">남은 개수, 느낌표, 체크</text>
+
+    <rect class="box" x="0" y="54" width="136" height="72" rx="2"/>
+    <text class="t" x="10" y="72">팝업</text>
+    <text class="m" x="10" y="86">popup.html, popup.js</text>
+    <text class="s" x="10" y="103">링크와 목록 이름 입력</text>
+    <text class="s" x="10" y="117">진행 상황과 실패 목록</text>
+
+    <rect class="hub" x="232" y="6" width="200" height="104" rx="2"/>
+    <text class="t" x="244" y="25">서비스 워커</text>
+    <text class="lbl" x="422" y="25" text-anchor="end">1분마다 상태 점검</text>
+    <text class="m" x="244" y="39">background.js, geo.js</text>
+    <text class="s" x="244" y="58">네이버 목록 읽기</text>
+    <text class="s" x="244" y="72">장소를 하나씩 검색하고 판정</text>
+    <text class="s" x="244" y="86">저장 결과 기록</text>
+    <text class="s" x="244" y="100">아이콘 상태 그리기</text>
+
+    <rect class="box" x="232" y="132" width="200" height="40" rx="2"/>
+    <text class="m" x="244" y="149" style="fill: var(--color-ink); font-size: 9px">chrome.storage.local</text>
+    <text class="s" x="244" y="164">places, index, order, log</text>
+
+    <rect class="box" x="528" y="0" width="160" height="56" rx="2"/>
+    <text class="t" x="538" y="18">네이버 저장 목록 API</text>
+    <text class="m" x="538" y="32">pages.map.naver.com</text>
+    <text class="s" x="538" y="47">이름, 주소, 위도와 경도</text>
+
+    <rect class="box" x="528" y="82" width="160" height="90" rx="2"/>
+    <text class="t" x="538" y="99">구글지도 작업 탭</text>
+    <text class="m" x="538" y="113">google.com/maps?hl=en</text>
+    <text class="m" x="538" y="131">inspectPage</text>
+    <text class="s" x="538" y="143">장소, 결과 목록, 없음 판별</text>
+    <text class="m" x="538" y="157">saveInPage</text>
+    <text class="s" x="538" y="168">Save, 목록 선택, 체크 확인</text>
+
+    <line class="ln" x1="232" y1="22" x2="139" y2="22" marker-end="url(#a)"/>
+    <text class="m" x="185" y="16" text-anchor="middle">setIcon</text>
+    <line class="ln" x1="136" y1="88" x2="229" y2="88" marker-end="url(#a)"/>
+    <text class="m" x="183" y="71" text-anchor="middle" style="font-size: 7.6px">load, start, resume</text>
+    <text class="m" x="183" y="81" text-anchor="middle" style="font-size: 7.6px">retryFailed, stop</text>
+    <path class="ln" d="M232,158 H70 V129" marker-end="url(#a)"/>
+    <text class="m" x="150" y="152" text-anchor="middle">storage.onChanged</text>
+    <line class="ln" x1="332" y1="110" x2="332" y2="129" marker-end="url(#a)"/>
+    <text class="lbl" x="338" y="124">기록</text>
+
+    <line class="hot" x1="528" y1="28" x2="435" y2="28" marker-end="url(#h)"/>
+    <text class="s" x="480" y="21" text-anchor="middle">장소 목록</text>
+    <text class="lbl" x="480" y="41" text-anchor="middle">Origin 헤더를</text>
+    <text class="lbl" x="480" y="51" text-anchor="middle">바꿔서 요청</text>
+    <line class="hot" x1="432" y1="92" x2="525" y2="92" marker-end="url(#h)"/>
+    <text class="m" x="479" y="86" text-anchor="middle">executeScript</text>
+    <line class="ln" x1="528" y1="102" x2="435" y2="102" marker-end="url(#a)"/>
+    <text class="lbl" x="480" y="115" text-anchor="middle">판별, 저장 결과</text>
+  </svg>
+  <figcaption><b>그림 1</b>구성 요소와 주고받는 것. 붉은 선은 장소 데이터가 지나가는 길이다.</figcaption>
+</figure>
+
+<section class="row2">
+  <figure>
+    <svg viewBox="0 0 400 226" role="img" aria-label="장소 하나를 처리하는 순서">
+      <defs>
+        <marker id="b" viewBox="0 0 8 8" refX="7.2" refY="4" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.6 L7.6,4 L0,7.4 Z" style="fill: var(--color-ink-2)"/></marker>
+        <marker id="c" viewBox="0 0 8 8" refX="7.2" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0.6 L7.6,4 L0,7.4 Z" style="fill: var(--color-accent)"/></marker>
+      </defs>
+      <rect class="box" x="110" y="0" width="180" height="26" rx="2"/>
+      <text class="q" x="200" y="17" text-anchor="middle">검색 1. 이름과 주소로</text>
+      <line class="hot" x1="200" y1="26" x2="200" y2="37" marker-end="url(#c)"/>
+
+      <rect class="ask" x="130" y="40" width="140" height="24" rx="2"/>
+      <text class="q" x="200" y="56" text-anchor="middle">어떤 화면이 떴나</text>
+
+      <path class="ln" d="M200,64 V74 H62 V83" marker-end="url(#b)"/>
+      <line class="hot" x1="200" y1="64" x2="200" y2="83" marker-end="url(#c)"/>
+      <path class="ln" d="M200,74 H338 V83" marker-end="url(#b)"/>
+      <text class="lbl" x="62" y="70" text-anchor="middle">장소 페이지</text>
+      <text class="lbl" x="205" y="82">결과 목록</text>
+      <text class="lbl" x="338" y="70" text-anchor="middle">결과 없음</text>
+
+      <rect class="box" x="0" y="86" width="124" height="40" rx="2"/>
+      <text class="s" x="62" y="102" text-anchor="middle">네이버 좌표에서 1km</text>
+      <text class="s" x="62" y="116" text-anchor="middle">안쪽인지 확인</text>
+
+      <rect class="box" x="138" y="86" width="124" height="40" rx="2" style="stroke: var(--color-accent)"/>
+      <text class="s" x="200" y="102" text-anchor="middle">250m 안 후보만 남겨</text>
+      <text class="s" x="200" y="116" text-anchor="middle">점수순 정렬 (그림 3)</text>
+
+      <rect class="box" x="276" y="86" width="124" height="40" rx="2"/>
+      <text class="q" x="338" y="102" text-anchor="middle">검색 2</text>
+      <text class="s" x="338" y="116" text-anchor="middle">좌표 주변에서 이름으로</text>
+
+      <path class="ln" d="M386,86 V52 H273" marker-end="url(#b)"/>
+      <text class="lbl" x="330" y="47" text-anchor="middle">다시 판별</text>
+
+      <path class="ln" d="M62,126 V138 H196"/>
+      <line class="hot" x1="200" y1="126" x2="200" y2="145" marker-end="url(#c)"/>
+
+      <rect class="ask" x="120" y="148" width="160" height="24" rx="2"/>
+      <text class="q" x="200" y="164" text-anchor="middle">고른 곳이 폐업했나</text>
+
+      <path class="ln" d="M280,160 H338 V129" marker-end="url(#b)"/>
+      <text class="lbl" x="309" y="155" text-anchor="middle">예, 보관</text>
+
+      <line class="hot" x1="200" y1="172" x2="200" y2="187" marker-end="url(#c)"/>
+      <text class="lbl" x="206" y="183">아니오</text>
+
+      <rect class="box" x="116" y="190" width="168" height="26" rx="2" style="stroke: var(--color-accent)"/>
+      <text class="q" x="200" y="207" text-anchor="middle">Save 누르고 목록 체크 확인</text>
+
+      <path class="ln" d="M396,126 V180"/>
+      <text class="s" x="396" y="192" text-anchor="end">검색 2도 실패하면</text>
+      <text class="s" x="396" y="205" text-anchor="end">기록만 한다. 폐업 후보는</text>
+      <text class="s" x="396" y="218" text-anchor="end">경고를 붙여 저장한다.</text>
+    </svg>
+    <figcaption><b>그림 2</b>장소 하나를 처리하는 순서. 붉은 선이 가장 흔한 경로다. 구글지도는 영어 화면으로 고정해 버튼 이름이 바뀌지 않게 했다.</figcaption>
+  </figure>
+
+  <figure>
+    <svg viewBox="0 0 264 180" role="img" aria-label="후보 고르기 예시">
+      <line class="grid" x1="0" y1="90" x2="264" y2="90"/>
+      <line class="grid" x1="120" y1="0" x2="120" y2="166"/>
+      <circle class="ring" cx="120" cy="90" r="72"/>
+      <text class="lbl" x="120" y="176" text-anchor="middle">반경 250m</text>
+
+      <rect x="117" y="87" width="6" height="6" style="fill: var(--color-ink)"/>
+      <line class="ln" x1="116" y1="94" x2="98" y2="106"/>
+      <text class="s" x="96" y="111" text-anchor="end">네이버 좌표</text>
+
+      <circle cx="125" cy="85" r="3.4" style="fill: var(--color-paper); stroke: var(--color-ink-2); stroke-width: 1"/>
+      <line class="ln" x1="128" y1="82" x2="140" y2="72"/>
+      <text class="s" x="142" y="70">A 20m 폐업, 1020점</text>
+
+      <circle cx="100" cy="81" r="4.4" style="fill: var(--color-accent)"/>
+      <line class="ln" x1="97" y1="77" x2="88" y2="66"/>
+      <text class="t" x="86" y="63" text-anchor="end">B 77m, 77점</text>
+
+      <circle cx="146" cy="121" r="3.4" style="fill: var(--color-paper); stroke: var(--color-ink-2); stroke-width: 1"/>
+      <text class="s" x="153" y="125">C 140m 휴업, 290점</text>
+
+      <circle cx="210" cy="14" r="3.4" style="fill: var(--color-paper); stroke: var(--color-rule-2); stroke-width: 1"/>
+      <text class="lbl" x="202" y="18" text-anchor="end">D 410m, 반경 밖</text>
+    </svg>
+    <figcaption><b>그림 3</b>후보 고르기 예시(가상 배치). 점수는 거리(m)에 폐업 1000, 임시 휴업 150을 더하고 이름이 비슷하면 100을 뺀다. 가장 낮은 B를 고른다.</figcaption>
+  </figure>
+</section>
+
+<section class="row3">
+  <div>
+    <h2>만들면서 정한 것</h2>
+    <ol class="dec">
+      <li><div><h3>저장 경로</h3><p>마이맵 KML로 시작했지만 저장 목록과 따로 노는 지도라 앱에서 쓰기 불편했다. 화면 변화에 약한 점을 감수하고 브라우저 자동화로 옮겼다.</p></div></li>
+      <li><div><h3>입력은 링크 하나</h3><p>CSV 없이 공유 링크만 받는다. 네이버가 확장 프로그램의 요청을 403으로 막아서 그 요청에만 Origin 헤더를 바꿔 보낸다.</p></div></li>
+      <li><div><h3>속도와 차단</h3><p>시험용 일부 저장 옵션은 없앴다. 고정 대기를 화면 변화 감지로 바꾸고 장소 사이엔 1~2.5초 무작위 간격을 둬 로봇 확인을 피한다.</p></div></li>
+      <li><div><h3>같은 이름의 가게</h3><p>초기엔 결과가 여럿이면 실패로 넘겼다. 지금은 결과 URL의 플러스 코드로 좌표를 구해 거리와 영업 상태로 고른다.</p></div></li>
+      <li><div><h3>멈췄다는 신호</h3><p>기본 배지는 16px 아이콘에서 숫자가 안 보였다. 작업 중엔 아이콘 전체를 원으로 바꿔 남은 개수와 느낌표, 체크를 그린다.</p></div></li>
+      <li><div><h3>실패 처리</h3><p>못 찾은 곳은 기록하고 넘어간다. 로그인이나 로봇 확인 문제일 때만 멈추고 '이어서'와 '실패만 다시 시도'로 복구한다.</p></div></li>
+    </ol>
+  </div>
+
+  <div class="right">
+    <figure>
+      <svg viewBox="0 0 250 112" role="img" aria-label="작업 상태">
+        <defs>
+          <marker id="d" viewBox="0 0 8 8" refX="7.2" refY="4" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0.6 L7.6,4 L0,7.4 Z" style="fill: var(--color-ink-2)"/></marker>
+        </defs>
+        <text class="lbl" x="0" y="59">시작</text>
+        <line class="ln" x1="19" y1="56" x2="29" y2="56" marker-end="url(#d)"/>
+        <rect class="hub" x="31" y="42" width="64" height="28" rx="2"/>
+        <text class="q" x="63" y="60" text-anchor="middle">진행 중</text>
+        <rect class="box" x="156" y="0" width="94" height="32" rx="2"/>
+        <text class="q" x="203" y="14" text-anchor="middle">완료</text>
+        <text class="lbl" x="203" y="27" text-anchor="middle">실패만 다시 시도 가능</text>
+        <rect class="box" x="156" y="40" width="94" height="32" rx="2" style="stroke: var(--color-accent)"/>
+        <text class="q" x="203" y="54" text-anchor="middle">멈춤</text>
+        <text class="lbl" x="203" y="67" text-anchor="middle">이어서 가능</text>
+        <rect class="box" x="156" y="80" width="94" height="32" rx="2"/>
+        <text class="q" x="203" y="94" text-anchor="middle">중지</text>
+        <text class="lbl" x="203" y="107" text-anchor="middle">이어서 가능</text>
+        <line class="ln" x1="95" y1="50" x2="153" y2="17" marker-end="url(#d)"/>
+        <line class="ln" x1="95" y1="56" x2="153" y2="56" marker-end="url(#d)"/>
+        <line class="ln" x1="95" y1="62" x2="153" y2="95" marker-end="url(#d)"/>
+      </svg>
+      <figcaption><b>그림 4</b>작업 상태. 로그인 풀림, 로봇 확인, 목록 없음, 탭 닫힘, 브라우저 재시작은 멈춤이 된다.</figcaption>
+    </figure>
+
+    <h2 class="second">확인 범위</h2>
+    <table class="check">
+      <tr><th>구글지도 대조</th><td>좌표 차이 2m, 25m로 일치. '스타벅스' 10곳 중 39m 지점 선택</td></tr>
+      <tr><th>단위 테스트</th><td>플러스 코드, 거리, 후보 점수 8개 통과 (<span class="mono" style="white-space: nowrap">node --test</span>)</td></tr>
+      <tr><th>못 한 것</th><td>폐업 문구의 실제 화면 인식</td></tr>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <p><b>한계</b>네이버 내부 API나 구글지도 화면 구조가 바뀌면 고쳐야 한다.</p>
+  <p><b>사용 기술</b>Chrome 확장 MV3, JavaScript, Python (KML 변환기)</p>
+</footer>
+
+</body>
+</html>

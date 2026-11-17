@@ -3,5 +3,4 @@
 *.csv
 # 로컬 미리보기·작업 파일
 /*-preview.png
-/docs/*.pdf
 .DS_Store
