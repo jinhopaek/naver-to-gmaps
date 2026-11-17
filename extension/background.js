@@ -1,16 +1,15 @@
 // 서비스 워커: 장소 큐를 하나씩 처리한다.
 // 상태는 chrome.storage.local 의 "run" 키에 저장하고, 팝업이 그것을 읽어 표시한다.
 
-const BG_VERSION = "0.6.0";
+// 좌표 계산과 후보 점수는 geo.js(순수 함수, 단위 테스트 대상)에 있다.
+importScripts("geo.js");
+
+const BG_VERSION = "0.6.1";
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 // 장소 사이 대기(ms). 너무 빠르면 구글 차단 페이지(/sorry/)가 뜰 수 있다.
 // 차단되면 자동으로 멈추고, 잠시 뒤 '이어서'로 계속할 수 있다.
 const MIN_GAP = 1000;
 const MAX_GAP = 2500;
-
-// 좌표 판정 기준(m)
-const NEAREST_MAX = 250; // 검색 결과 여러 개 중 고를 때: 네이버 좌표에서 이 거리 안이어야 함
-const DIRECT_MAX = 1000; // 바로 장소 페이지가 열렸을 때: 이보다 멀면 다른 장소로 보고 재검색
 
 let stopRequested = false;
 
@@ -72,54 +71,6 @@ async function loadNaverList(link) {
     skipped: all.length - places.length,
     places,
   };
-}
-
-// ── 좌표 ────────────────────────────────────────────────────────────
-// 구글지도는 장소 URL에 플러스 코드(예: !20s8Q99H276+FHJ)를 넣어 둔다. 이를 위경도로 바꾼다.
-function decodePlus(code) {
-  const A = "23456789CFGHJMPQRVWX";
-  const c = String(code).toUpperCase().replace("+", "").replace(/0+$/, "");
-  if (c.length < 8 || [...c].some((ch) => !A.includes(ch))) return null;
-  let lat = -90, lng = -180, res = 20;
-  const pairEnd = Math.min(c.length, 10);
-  for (let i = 0; i < pairEnd; i += 2) {
-    lat += A.indexOf(c[i]) * res;
-    lng += A.indexOf(c[i + 1]) * res;
-    if (i + 2 < pairEnd) res /= 20;
-  }
-  let hLat = res / 2, hLng = res / 2;
-  if (c.length > 10) {
-    let rLat = res, rLng = res;
-    for (let i = 10; i < c.length; i++) {
-      const d = A.indexOf(c[i]);
-      rLat /= 5;
-      rLng /= 4;
-      lat += Math.floor(d / 4) * rLat;
-      lng += (d % 4) * rLng;
-    }
-    hLat = rLat / 2;
-    hLng = rLng / 2;
-  }
-  return { lat: lat + hLat, lng: lng + hLng };
-}
-
-function plusFromUrl(url) {
-  const m = decodeURIComponent(url || "").match(/!20s([23456789CFGHJMPQRVWX]{8}\+[23456789CFGHJMPQRVWX]*)/i);
-  return m ? m[1] : null;
-}
-
-function distM(a, b) {
-  if (!a || !b || a.lat == null || b.lat == null) return null;
-  const R = 6371000, toR = Math.PI / 180;
-  const dLat = (b.lat - a.lat) * toR, dLng = (b.lng - a.lng) * toR;
-  const h = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * toR) * Math.cos(b.lat * toR) * Math.sin(dLng / 2) ** 2;
-  return Math.round(2 * R * Math.asin(Math.sqrt(h)));
-}
-
-const norm = (s) => String(s || "").toLowerCase().replace(/[\s\-_.·,'"()]/g, "");
-function nameMatch(a, b) {
-  const x = norm(a), y = norm(b);
-  return !!x && !!y && (x.includes(y) || y.includes(x));
 }
 
 // ── 실행 상태 ───────────────────────────────────────────────────────
@@ -329,12 +280,6 @@ async function go(tabId, url) {
   return waitForPage(tabId, prevUrl === url ? null : prevUrl);
 }
 
-// 후보 점수(작을수록 좋음): 네이버 좌표와의 거리(m)
-//  - 이름이 비슷하면 −100m (같은 건물에 가게가 여럿일 때 대비)
-//  - 임시 휴업이면 +150m, 폐업이면 +1000m (근처에 영업 중인 곳이 있으면 항상 그쪽을 고름)
-const CLOSED_PENALTY = { temp: 150, perm: 1000 };
-const score = (r) => r.d - (r.nm ? 100 : 0) + (CLOSED_PENALTY[r.closed] || 0);
-
 // 네이버 장소 하나를 구글 장소 페이지로 확정한다.
 // 1) 이름+주소 검색 → 2) 이름만으로 네이버 좌표 주변 검색.
 // 검색 결과가 여럿이면 '영업 중인지'와 '좌표가 가까운지'를 함께 보고 고른다.
@@ -355,10 +300,7 @@ async function resolvePlace(tabId, p) {
     if (page.kind === "feed") {
       lastFeed = page.results.length;
       if (!hasCoord) continue;
-      const near = page.results
-        .map((r) => ({ ...r, d: distM(p, decodePlus(plusFromUrl(r.href))), nm: nameMatch(p.name, r.label) }))
-        .filter((r) => r.d != null && r.d <= NEAREST_MAX)
-        .sort((x, y) => score(x) - score(y));
+      const near = rankCandidates(p, page.results);
       if (!near.length) continue;
       const best = near[0];
       const info = {

@@ -3,7 +3,7 @@ let places = [];
 let lastRun = null;
 let filter = "all";
 
-const EXPECTED = "0.6.0";
+const EXPECTED = "0.6.1";
 const RELOAD_MSG = "chrome://extensions 에서 이 확장의 새로고침(↻)을 누른 뒤 팝업을 다시 여세요.";
 
 const STATUS_KO = {

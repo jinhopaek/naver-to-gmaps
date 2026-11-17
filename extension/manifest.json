@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Naver → Google Maps 저장 목록",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "네이버 지도 공유 목록의 장소를 구글지도 저장 목록에 하나씩 저장합니다 (시제품).",
   "permissions": ["tabs", "scripting", "storage", "alarms", "declarativeNetRequestWithHostAccess"],
   "host_permissions": [
