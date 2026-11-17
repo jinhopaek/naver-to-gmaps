@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <!-- 모든 크기(16·32·48·128px) 공통 아이콘: 그라데이션 타일 + 흰 핀 + 파란 점 -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1FCF84"/>
+      <stop offset="1" stop-color="#2F6BFF"/>
+    </linearGradient>
+    <linearGradient id="pin" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.98"/>
+      <stop offset="1" stop-color="#E4F1FF" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="tile"><rect x="0" y="0" width="128" height="128" rx="30"/></clipPath>
+  </defs>
+  <rect x="0" y="0" width="128" height="128" rx="30" fill="url(#bg)"/>
+  <path d="M0 0 H128 V50 C96 60 40 42 0 58 Z" fill="url(#sheen)" clip-path="url(#tile)"/>
+  <path d="M64 114 C52 100 30 80 30 54 A34 34 0 1 1 98 54 C98 80 76 100 64 114 Z" fill="url(#pin)"/>
+  <circle cx="64" cy="54" r="14" fill="#2A8FD8"/>
+</svg>

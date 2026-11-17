@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<style>
+  :root {
+    --bg: #F5F6F8; --card: #FFFFFF; --text: #16181D; --sub: #6B7280; --line: #E6E8EC;
+    --field: #F3F4F6; --blue: #2F6BFF; --green: #12A150; --red: #D93025; --amber: #B26A00;
+    --grad: linear-gradient(135deg, #1FCF84, #2F6BFF);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #15171B; --card: #1F2228; --text: #ECEEF2; --sub: #9AA1AD; --line: #2E323A;
+      --field: #2A2E35; --blue: #6E9BFF; --green: #3BCB7A; --red: #FF6B5E; --amber: #F2B14C;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    width: 360px; margin: 0; background: var(--bg); color: var(--text);
+    font: 13px/1.45 -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", sans-serif;
+  }
+  header { display: flex; align-items: center; gap: 10px; padding: 14px 16px 6px; }
+  header img { width: 28px; height: 28px; }
+  header h1 { font-size: 15px; margin: 0; font-weight: 700; letter-spacing: -0.2px; }
+  header p { margin: 0; font-size: 11.5px; color: var(--sub); }
+  main { padding: 8px 12px 12px; display: flex; flex-direction: column; gap: 10px; }
+
+  .card { background: var(--card); border-radius: 14px; padding: 12px; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+  .step { display: flex; align-items: center; gap: 8px; font-weight: 600; margin-bottom: 8px; }
+  .num {
+    width: 18px; height: 18px; border-radius: 50%; background: var(--grad); color: #fff;
+    font-size: 11px; display: grid; place-items: center; flex: none;
+  }
+  .field { display: flex; gap: 6px; }
+  input[type=text] {
+    flex: 1; min-width: 0; border: 1px solid transparent; background: var(--field); color: var(--text);
+    border-radius: 10px; padding: 9px 11px; font: inherit; outline: none; transition: border-color .15s, background .15s;
+  }
+  input[type=text]:focus { border-color: var(--blue); background: var(--card); }
+  .hint { font-size: 11.5px; color: var(--sub); margin-top: 6px; }
+  .hint.err { color: var(--red); }
+
+  button {
+    font: inherit; font-weight: 600; border: 0; border-radius: 10px; padding: 9px 12px; cursor: pointer;
+    transition: transform .05s, opacity .15s, background .15s;
+  }
+  button:active { transform: scale(.98); }
+  button:disabled { opacity: .45; cursor: default; }
+  .ghost { background: var(--field); color: var(--text); }
+  .primary { width: 100%; padding: 12px; color: #fff; background: var(--grad); font-size: 14px; }
+
+  .folder {
+    display: none; align-items: center; gap: 8px; margin-top: 8px; padding: 8px 10px;
+    background: var(--field); border-radius: 10px;
+  }
+  .folder.show { display: flex; }
+  .folder b { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pill { font-size: 11.5px; color: var(--blue); font-weight: 600; white-space: nowrap; }
+
+  /* 진행 상태 */
+  #progressCard { display: none; }
+  #progressCard.show { display: block; }
+  .ph { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
+  .ph .state { font-weight: 700; }
+  .ph .count { color: var(--sub); font-variant-numeric: tabular-nums; }
+  .bar { height: 8px; background: var(--field); border-radius: 99px; overflow: hidden; }
+  .bar > i { display: block; height: 100%; width: 0; background: var(--grad); border-radius: 99px; transition: width .3s; }
+  .stats { display: flex; gap: 6px; margin-top: 10px; }
+  .stat { flex: 1; background: var(--field); border-radius: 10px; padding: 7px 8px; text-align: center; }
+  .stat b { display: block; font-size: 16px; font-variant-numeric: tabular-nums; }
+  .stat span { font-size: 11px; color: var(--sub); }
+  .stat.ok b { color: var(--green); } .stat.bad b { color: var(--red); }
+  .banner { display: none; margin-top: 10px; padding: 9px 10px; border-radius: 10px; font-size: 12.5px; }
+  .banner.show { display: block; }
+  .banner.red { background: color-mix(in srgb, var(--red) 12%, transparent); color: var(--red); }
+  .banner.green { background: color-mix(in srgb, var(--green) 12%, transparent); color: var(--green); }
+  .actions { display: flex; gap: 6px; margin-top: 10px; }
+  .actions button { flex: 1; }
+  #resume { background: var(--blue); color: #fff; }
+  #retry { background: var(--grad); color: #fff; }
+  .row .m.warn { color: var(--amber); }
+
+  /* 결과 */
+  #resultsCard { display: none; padding: 0; overflow: hidden; }
+  #resultsCard.show { display: block; }
+  .tabs { display: flex; gap: 4px; padding: 10px 12px 6px; }
+  .tab { background: none; padding: 5px 10px; border-radius: 99px; color: var(--sub); font-size: 12px; }
+  .tab.on { background: var(--field); color: var(--text); }
+  #log { max-height: 220px; overflow-y: auto; padding: 0 6px 6px; }
+  .row { display: flex; gap: 9px; padding: 8px 6px; border-radius: 10px; cursor: pointer; }
+  .row:hover { background: var(--field); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex: none; }
+  .dot.ok { background: var(--green); } .dot.skip { background: var(--sub); } .dot.bad { background: var(--red); }
+  .row .t { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .row .m { font-size: 11.5px; color: var(--sub); }
+  .row .m.bad { color: var(--red); }
+  .empty { padding: 14px; text-align: center; color: var(--sub); font-size: 12px; }
+
+  footer { padding: 0 16px 12px; font-size: 10.5px; color: var(--sub); text-align: right; }
+</style>
+</head>
+<body>
+  <header>
+    <img src="icons/icon32.png" alt="">
+    <div>
+      <h1>구글지도로 옮기기</h1>
+      <p>네이버 지도 저장 목록 → 구글지도 저장 목록</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="step"><span class="num">1</span>네이버 공유 링크</div>
+      <div class="field">
+        <input type="text" id="link" placeholder="https://naver.me/…" autocomplete="off">
+        <button class="ghost" id="load">불러오기</button>
+      </div>
+      <div class="folder" id="folder"><b id="folderName"></b><span class="pill" id="folderCount"></span></div>
+      <div class="hint" id="loadHint"></div>
+    </section>
+
+    <section class="card">
+      <div class="step"><span class="num">2</span>저장할 구글지도 목록</div>
+      <input type="text" id="list" placeholder="목록 이름 (예: 서울 카페)" autocomplete="off" style="width:100%">
+      <div class="hint">구글지도에 미리 만들어 둔 목록 이름을 정확히 적어 주세요. 기본 목록은 영어 이름(Want to go, Favorites)입니다.</div>
+    </section>
+
+    <button class="primary" id="start">저장 시작</button>
+
+    <section class="card" id="progressCard">
+      <div class="ph"><span class="state" id="state"></span><span class="count" id="count"></span></div>
+      <div class="bar"><i id="barFill"></i></div>
+      <div class="stats">
+        <div class="stat ok"><b id="nOk">0</b><span>저장</span></div>
+        <div class="stat"><b id="nSkip">0</b><span>이미 있음</span></div>
+        <div class="stat bad"><b id="nBad">0</b><span>실패</span></div>
+      </div>
+      <div class="banner" id="banner"></div>
+      <div class="actions">
+        <button class="ghost" id="stop">중지</button>
+        <button id="resume">이어서</button>
+        <button id="retry">실패한 것만 다시 시도</button>
+      </div>
+    </section>
+
+    <section class="card" id="resultsCard">
+      <div class="tabs">
+        <button class="tab on" data-f="all">전체</button>
+        <button class="tab" data-f="bad">실패만</button>
+      </div>
+      <div id="log"></div>
+    </section>
+  </main>
+  <footer id="ver"></footer>
+  <script src="popup.js"></script>
+</body>
+</html>

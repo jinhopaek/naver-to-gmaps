@@ -1,0 +1,7 @@
+# 개인 저장 목록 데이터(변환 결과)는 올리지 않는다
+*.kml
+*.csv
+# 로컬 미리보기·작업 파일
+/*-preview.png
+/docs/*.pdf
+.DS_Store
