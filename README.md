@@ -6,6 +6,8 @@
 
 <p align="center"><sub>A Chrome extension that copies places from a shared Naver Map list into your Google Maps saved list.</sub></p>
 
+<p align="center">한 페이지 설명서: <a href="docs/overview-ko.pdf">한국어 PDF</a>, <a href="docs/overview-en.pdf">English PDF</a></p>
+
 ---
 
 ## 왜 만들었나
